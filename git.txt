@@ -1,0 +1,4 @@
+Set custom username and email per repository:
+cd repodir
+git config user.name "subspacesignal"
+git config user.email "signalsubspace@gmail.com"
