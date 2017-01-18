@@ -67,3 +67,4 @@ setTimeout(function() {
 // XHR means XMLHttpRequest, its name is misleading as it can use
 // XML/JSON/HTML/plaintext and can use protocols other than HTTP. Ajax relies on
 // this to work.
+// XMLHttpRequest is fundamental - basically any web framework is built on it.

@@ -253,3 +253,23 @@ angular.module('project').value('projectListValue', [ { name: 'AngularJS' },
 // (the type=url part)
 
 // ng-disabled can disable buttons etc.
+
+// ng-cloak hides an element in the DOM until angular has worked on it e.g.
+// you can use this to stop users from seeing "{{ temp }}" show up as temp for a
+// flickering millisecond until angular has interpolated it and updated the DOM.
+
+// $http is a service which can be injected. You can do
+$http.get('/api')
+  .success(function(result){
+    $scope.temp = result;
+  })
+  .error(function (data, status) {
+    console.log(data);
+  });
+// which assumes you're requesting on the same domain as the page was served.
+
+// there's $http.post too
+$http.post('/api', { temp: $scope.temp }) // json straight into the post
+  .success(...)
+
+// Each controller gets its own $scope!! they are not automatically shared
