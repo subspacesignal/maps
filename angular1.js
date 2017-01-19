@@ -195,8 +195,8 @@ setTimeout(function() {
 
 // ng-class directive can decide which class to apply to an element. It takes a
 // json object with embedded javascript expressions e.g.
-<div class="alert" ng-class="{ 'alert-warning': name.length < 5, 'alert-danger':
-name.length > 10 }"></div>
+// <div class="alert" ng-class="{ 'alert-warning': name.length < 5,
+// 'alert-danger': name.length > 10 }"></div>
 
 // ng-repeat directive e.g. you can do
 $scope.rules = [
@@ -232,8 +232,8 @@ angular.module('project').value('projectListValue', [ { name: 'AngularJS' },
 { name: 'React' } ] )
 
 // ng-repeat can do more logic than just loop e.g.
-<tr ng-repeat="project in projectList.projects | filter:projectList.search
-| orderBy:'name'">
+// <tr ng-repeat="project in projectList.projects | filter:projectList.search
+// | orderBy:'name'">
 
 // ng-click can be used to invoke methods directly in the .js controller, not
 // just on button elements e.g. on a href link
@@ -243,7 +243,7 @@ angular.module('project').value('projectListValue', [ { name: 'AngularJS' },
 // You can also pass uri params e.g.
 <a ng-href="#/edit/{{project.$id}}"><i class="icon-pencil"></i></a>
 // (project is from
-<tr ng-repeat="project in projectList.projects>
+// <tr ng-repeat="project in projectList.projects>
 
 // You can do form validation e.g.
 <input type="text" name="name" ng-model="editProject.project.name" required>

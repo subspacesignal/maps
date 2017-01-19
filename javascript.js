@@ -47,7 +47,7 @@ document.getElementById("nameId");
 // DOM elements are always emitting events, you just have to listen for them
 var nameElement = document.getElementById("nameId");
 nameElement.addEventListener("keypress", function(event){
-  console.log('a key was pressed)
+  console.log("a key was pressed")
 });
 
 // JavaScript seems to always have an event loop running which is how, for
