@@ -196,7 +196,7 @@ setTimeout(function() {
 // ng-class directive can decide which class to apply to an element. It takes a
 // json object with embedded javascript expressions e.g.
 <div class="alert" ng-class="{ 'alert-warning': name.length < 5, 'alert-danger':
-name.length > 10 }"
+name.length > 10 }"></div>
 
 // ng-repeat directive e.g. you can do
 $scope.rules = [
