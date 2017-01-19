@@ -68,3 +68,18 @@ setTimeout(function() {
 // XML/JSON/HTML/plaintext and can use protocols other than HTTP. Ajax relies on
 // this to work.
 // XMLHttpRequest is fundamental - basically any web framework is built on it.
+
+$scope.num = $routeParams.num || 1; // means if $routeParams.num exists return
+// that or else return 1
+
+// In JavaScript functions... using this from inside a function refers to the
+// function when often you might want to refer to the 'parent this'
+// assinging it to something like a self var is a common pattern to work around
+myApp.service('nameService', function() {
+  // all functions and properties you want in your service
+  this.name = 'John Doe';
+  var self = this;
+  this.nameLength = function() {
+    return self.name.length;
+  };
+});

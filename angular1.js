@@ -273,3 +273,101 @@ $http.post('/api', { temp: $scope.temp }) // json straight into the post
   .success(...)
 
 // Each controller gets its own $scope!! they are not automatically shared
+
+// Angular's routing (using # in urls) has origins in # links in HTML which let
+// you jump down to a position (anchor tag/fragment identifier) in a page.
+// There's an event for this which .js can bind to
+window.addEventListener('hashchange', function() {
+
+})
+// the anchor location doesn't actually need to exist for the event to fire -
+// Angular exploits this..
+// the location can even include / characters e.g. index.html#/bookmark/2
+// if (window.location.hash === 'index.html#/bookmark/2') get my DOM to show...
+// mimicing what a normal browser url does... and using AJAX to go fetch the
+// right "page" info.. arrive at single page applications
+// the #temp is a fragment identifier
+// the # tag in markup is an anchor tag
+// This all works because when you click an anchor link in the browser it
+// doesn't refresh the page, it jumps.. hence js can intercept and manipulate
+// the dom without any browser page refresh happening.
+
+// $location service gives you control over routing
+$log.info($location.path());
+// would show you the fragment identifier e.g. angular knows 'where' you are
+
+// angular-route.js gives you more control, is IS a router, it checks the
+// location and knows which code should execute based on it
+// remember
+var myApp = angular.module('myApp', []);
+// is how you tell it which modules you want, so
+var myApp = angular.module('myApp', ['ngRoute']);
+// route providers, $routeProvider below is available because of including
+// the ngRoute module. $routeProvider lets you specify routes i.e. what should
+// I do when I see a particular path OR pattern..
+myApp.config(function($routeProvider) {
+  $routeProvider
+  .when('/', {
+    templateUrl: 'pages/main.html',
+    controller: 'mainController'
+  })
+  .when('/second', {
+    templateUrl: 'pages/second.html',
+    controller: 'secondController'
+  })
+});
+
+// When the router decides based on path which controller/template should be
+// used, it decides where to inject the resulting markup based on ng-view e.g.
+<div class="container">
+  <div ng-view></div> // Does ng-view not need a value?
+</div>
+// remember when angular goes to render the template it is requesting in the
+// browser over http to get the template file on the fly
+
+// pattern matching/getting values from routes/uri paths
+$routeProvider
+.when('/second/:num'), {
+
+})
+// automatically makes num available to controller code when you inject
+// $routeParams to the controller e.g.
+myApp.controller('secondController', ['$scope]', '$log', '$routeParams',
+function($scope, $log, $routeParams) {
+  $scope.num = $routeParams.num; // make it available to the view
+}]);
+
+// there's lots of other routers out there, this is just the default
+
+// Angular encourages a download the 'app' once and from there it's minimal so
+// speed is better instead of round trip apps
+
+// Angular services are implemented as singletons
+// $scope is an exception to the rule, it's actually a child scope..
+// the real scope is the parent; the root scope, passing the root scope service
+// to a controller results in a new child scope being created which is named
+// $scope
+// when you create your own custom service it should/will be a singleton
+
+// custom services
+myApp.service('nameService', function() {
+  // all functions and properties you want in your service
+  this.name = 'John Doe';
+
+  var self = this;
+  this.nameLength = function() {
+    return self.name.length;
+  };
+});
+
+// to use your own custom service you inject the service into the controller in
+// the same way you do the built in services but without a $ prefix
+
+// given that services are (normally) singletons, they can be stateful and be
+// used to share data between controllers that they're injected on.
+
+// One pattern is to put a manual watch on a value and pump its new value into
+// a service upon changes so that it's available everywhere
+
+// factories and providers are other constructs available to use in Angular
+// which are similar to services
