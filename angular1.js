@@ -371,3 +371,13 @@ myApp.service('nameService', function() {
 
 // factories and providers are other constructs available to use in Angular
 // which are similar to services
+
+// custom directives seems to usually refer to custom html elements which
+// evaluate into partial pieces of angular HTML
+
+// when you have a custom directive attribute
+<search-result my-attribute-href="">
+// the - causes problems in JavaScript because it's the minus keyword
+// so angular will convert it to camel case and vice versa e.g.
+// my-attribute-href will become myAttributeHref in .js and back to
+// my-attribute-href in markup
