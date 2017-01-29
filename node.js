@@ -199,3 +199,258 @@ var config = require('./config');
 var eventConfig = require('./config').events;
 // now you can use:
 eventConfig.GREET
+
+// node's util module 'util.inherits' functionality:
+var EventEmitter = require('events');
+var util = require('util');
+
+function Greetr() { // function prototype
+  this.greeting = 'hello world';
+}
+// make all event emitter available to Greetr objects
+util.inherits(Greetr, EventEmitter);
+
+Greetr.prorotype.greet = function() {
+  console.log(this.greeting);
+  this.emit('greet');
+}
+
+var greeter1 = new Greetr();
+greeter1.on('greet', function() {
+  console.log('someone greeter');
+});
+
+// won't find greet() on object but will on its prorotype
+// greet itself uses emit which won't be found either but will eventually in
+// the EventEmitter code
+greeter1.greet();
+// output will be "hello world" followed by "someone greeted"
+
+// If you wanted to pass some data via the event emitter:
+Greetr.prorotype.greet = function(data) {
+  console.log(this.greeting + ': ' + data);
+  this.emit('greet', data);
+}
+greeter1.on('greet', function(data) {
+  console.log('someone greeter' + data);
+});
+greeter1.greet('yo');
+// this is all used in node in a way that means objects can do work but also
+// emit events about what they're doing
+
+// node has 'real' ES6 it's not using babeljs or similar
+
+// If you wanted to add EventEmitter to the root object itself rather than the
+// prototype:
+function Greetr() { // function prorotype for Greetr objects
+  EventEmitter.call(this);
+  this.greeting = 'hello';
+}
+// EventEmitter itself is a function constructor so by passing this via .call
+// you're overriding the default this which EventEmitter would have had.
+// (could have also used .apply)
+// A simpler example of this:
+var util = require('util');
+
+function Person() {
+  this.firstname = 'jane';
+  this.lastname = 'doe';
+}
+
+Person.prototype.greet = function() {
+  console.log('Hello ' + this.firstname + ' ' + this.lastname);
+}
+
+function Policeman() {
+
+  // without this line, officer would be created with badgenumber but firstname
+  // and lastname would be undefined because inherits changes the prototype
+  // reference
+  Person.call(this); // make sure the person portion of officer also uses the
+  // same this reference as officer
+  this.badgenumber = '1234';
+}
+
+util.inherits(Policeman, Person);
+var officer = new Policeman();
+
+// Inheriting from event emitter using ES6 classes (don't need to use
+// util.inherits anymore):
+'use strict';
+class Greetr extends EventEmitter { // similar to util.inherits
+  constructor() {
+    super(); // similar to EventEmitter.call(this);
+    this.greeting = 'hello';
+  }
+
+  greet(data) {
+    console.log(this.greeting + ': ' + data); // could have used ES6 backticks
+    this.emit('greet', data);
+  }
+}
+
+// In a module, you can export a 'class expression':
+module.exports = class Greetr extends EventEmitter {
+  // ...
+// then you can use this class wherever you require the module
+
+// node does things asynchronously in C++/libuv, V8 does not, it's synchronous
+
+// It seems likely that listeners added to the event emitter will execute
+// synchronously in the order the listeners were added when an event is emitted
+
+// libuv talks directly to the OS and deals with events coming from the OS e.g.
+// open a file or download something from the internet, the OS sends events to
+// libuv's event queue
+// libuv has an event loop which is constantly checking the event queue for
+// work
+// note that on each libuv event loop check of the queue it may find more than
+// one new event
+// when libuv sees things in the queue, it calls their javascript callback back
+// into V8
+// when you see node's tagline "event driven non-blocking I/O in V8 javascript"
+// event driven refers to this node events and callbacks
+// non-blocking I/O refers to the OS events and how .js continues to execute in
+// V8 regardless, V8 will synchronously get around to libuv events when it can.
+// this is why node can't block, it's synchronous execution
+// libuv is a C library written primarily for node but has no dependency on node
+
+// node's Buffer object, the buffer is managed on the C++ side of node and made
+// avaliable to V8
+// it stores binary data, converts between buffers and javascript strings etc.
+// Buffer is a global core module, don't need to require it
+var buf = new Buffer('Hello', 'utf8'); // utf8 is default
+console.log(buf); // prints out <Buffer 48 ....> (hex representation of Hello)
+console.log(buf.toString()); // prints Hello because it knows the encoding
+// can convert buffer to json
+console.log(buf.toJSON); // prints out json representation
+// you can use it like an array
+buf[2];
+buf.write('wo'); // results in wollo because buffers are fixed size and writing
+// wo wrote it into the first two slots in the buffer
+// buffers supposedly exist in node because JS didn't have good ways of dealing
+// with binary data, however ES6 has improvements now
+
+// node filesystem module:
+var fs = require('fs');
+// __dirname is provided by node's wrapping function and is the directory where
+// the code currently executing exists so greet.txt would have to be at the
+// readFileSync reads the whole file into a node Buffer object
+// sync does mean synchronous so this blocks until the entire file is read.
+var greet = fs.readFileSync(__dirname + '/greet.txt'); // also add , 'utf8'
+// if you were doing this for multiple users with large files they'd all be
+// blocked.
+// parameter but utf8 is default
+console.log(greet);
+
+// async with callback:
+// err will be null if there's no error
+// this is a common pattern in node called 'error first callbacks'
+// data is a node binary Buffer, you could do data.toString() or tell readFile
+// that it's utf8
+var greet2 = fs.readFile(__dirname + '/greet.txt', function(err, data) {
+  console.log(data.toString());
+});
+// or
+var greet2 = fs.readFile(__dirname + '/greet.txt', 'utf8', function(err, data) {
+  console.log(data);
+});
+// again note this is async so code after fs.readFile continues to execute
+// remember that while fs.readFile is async it's also storing an entire file in
+// a node Buffer on V8's heap so if it's a huge file...
+
+// streams:
+// node streams are also event emitters, so as they operate they emit events
+// node has multiple types of streams - readable, writable, duplex (read and
+// write), transform (modify data as it passes through), passthrough
+// readable (for example) inherits from stream which inherits from event emitter
+// streams are essentially a base/abstract class (never used directly)
+// you can implement your own custom streams too
+// readable means node can read data from a streams
+// writable means node can write data to a streams
+// in http comms, from node's perspective, requests from the browser are
+// readable streams and responses sent to the browser are writable streams
+
+var fs = require('fs');
+var readable = fs.createReadStream(__dirname + '/greet.txt');
+readable.on('data', function(chunk) {
+  console.log(chunk); // prints binary
+});
+// the 'data' event is emitted by the stream when the internal buffer is full,
+// if the file was smaller than the buffer then you'd get the entire file
+// backticks in one event.
+var fs = require('fs');
+var readable = fs.createReadStream(__dirname + '/greet.txt',
+ { encoding: 'utf8' });
+readable.on('data', function(chunk) {
+  console.log(chunk); // prints text
+});
+// You can set the internal buffer size using the highWaterMark: 1024 option
+
+var writable = fs.createWriteStream(__dirname + '/greet-copy.txt');
+readable.on('data', function(chunk) {
+  writable.write(chunk);
+});
+// obviously the smaller the buffer, the less memory you use per stream
+
+// pipes - used to connect two streams e.g. readable to a writable stream
+// you can chain multiple streams together using multiple pipes in between but
+// remember that you'd have to be connecting a readable stream to a stream which
+// is both writable and readable always to do this
+// readable streams have a pipe function which takes a destination
+// pipe returns the destination after it's completed
+readable.pipe(writable); // instead of the readable.on above
+readable.pipe(duplexStream).pipe(...) // due to pipe returning destination
+var zlib = require('zlib'); // creates .gz files rather than .zip
+var gzip = zlib.createGzip(); // duplex stream
+readable.pipe(gzip).pipe(compressed) // compressed is a writable stream
+// this is 'method chaining'
+
+// node encourages the use of async/streams/pipes as much as possible
+
+// networking:
+// remember IP (internet protocol) establishes a socket between machines
+// TCP figures out how to reliably send data in that socket (using packets)
+// node treats TCP as streams
+// when you talk about websockets you're talking about keeping that IP socket
+// open for a long time
+var http = require('http');
+
+http.createServer(function(req, res) {
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.end('hello world\n');
+}).listen(1337, '127.0.0.1');
+
+// by default you need to restart node to see changes you make in the running
+// JavaScript
+
+// you could do:
+res.writeHead(200, { 'Content-Type': 'text/html' });
+var html = fs.readFileSync(__dirname + '/index.html');
+res.end(html); // passed as binary Buffer but you can pass a string too
+
+// async version:
+fs.createReadStream(__dirname + '/index.html').pipe(res);
+// streaming data to the response aligns well with how tcp is working anyway..
+// it's sending chunks to the browser so if it has enough bytes to send another
+// chunk given to it by node..
+
+// writing JSON
+res.writeHead(200, { 'Content-Type': 'application/json' });
+var obj = {
+  firstname: 'jane',
+  lastname: 'doe'
+};
+res.end(JSON.stringify(obj));
+// if it was JavaScript in the browser which made this request to node it could
+// very easily convert the JSON back to an object (serialization/
+// deserialization) and vice versa (json sent from browser to node)
+
+// (basic) routing:
+if (req.url === '/') {
+
+} else if (req.url === '/api') {
+
+} else {
+  // 404
+}

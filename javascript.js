@@ -200,7 +200,8 @@ console.log(firstname);
 
 // JSON was inspired by javascript's object literals
 // JSON's name/value pairs have the name wrapped in "" whereas object literals
-// don't
+// don't (but I think may still work if you wrap the name in ''? possibly even
+// ""?)
 
 // ES6 has its own modules, similar to node modules i.e. V8 itself supports
 // modules
@@ -213,3 +214,83 @@ arr.push(1);
 arr.forEach(function(item) {
   item(); // if it was an array of functions
 });
+
+// Every prototype has its own prototype?
+// many objects can point to the same prototype, this is inheritance in JS
+// In ES6 there are 'class' and 'extend' keywords which hook up prototype refs
+// Alternative to function constructors and class/extend is Object.create():
+var person = {
+  firstname: '',
+  lastname: 'Doe',
+  greet: function() {
+    return this.firstname + ' ' + this.lastname;
+  }
+}
+var jane = Object.create(person); // create jane from/out of the person object
+// this makes jane's prototype be the person object
+// you can overwrite the prototype's values:
+jane.firstname = 'override';
+jane.greet(); // prints Jane Doe
+
+// ES6 is ecmascript 2015
+// babeljs.io converts ES6 to older javascript
+
+// ES6 backticks:
+var name 'jane';
+var greet = `Hello ${ name }`;
+
+// .call and .apply let you change what the this reference points to in an
+// object.
+// .call:
+var obj = {
+  name: "jane doe",
+  greet: function() {
+    console.log(`Hello ${ this.name }`);
+  }
+}
+// You normally:
+obj.greet();
+// but you can pass an object to override things via .call:
+obj.greet.call({ name: 'doe jane'});
+// if you needed to pass params to the greet function too:
+obj.greet.call({ name: 'doe jane'}, data1, data2);
+// .apply is very similar
+obj.greet.apply({ name: 'doe jane'});
+// but if you needed to pass params to the greet function too:
+obj.greet.call({ name: 'doe jane'}, [data1, data2]); // pass params as array
+
+// the this keyword in a function constructor represents the object being
+// created when you use the 'new' keyword
+
+// Always make the JS engine be more strict and give more errors
+// Some new JS features cannot be used unless strict mode is on e.g. for ES6
+// classes.
+'use strict';
+
+// ES6 classes:
+// it's syntactic sugar rather than doing anything very differently
+// important to remember that when you see the class keyword, it's just not the
+// same as classes from other languages, it's just a short way of doing the same
+// prototypal inheritance internally
+'use strict';
+
+class Person {
+  constructor(firstname, lastname) {
+    this.firstname = firstname;
+    this.lastname = lastname;
+  }
+
+  greet() { // automatically put on the prototype
+    console.log('hello' + this.firstname + this.lastname);
+  }
+}
+var jane = new Person('jane', 'doe');
+
+// javascript is synchronous
+
+// ES6 typed arrays
+var buffer = new ArrayBuffer(8); // size is in bytes, so 64 bits
+var view = new Int32Array(buffer); // int 32 so 32 bits per number
+view[0] = 5;
+view[1] = 15;
+console.log(view);
