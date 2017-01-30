@@ -381,3 +381,6 @@ myApp.service('nameService', function() {
 // so angular will convert it to camel case and vice versa e.g.
 // my-attribute-href will become myAttributeHref in .js and back to
 // my-attribute-href in markup
+
+// angular helps you hide browser specifics e.g. not needing to maintain
+// different javascript code which works in various browsers

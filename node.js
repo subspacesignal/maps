@@ -454,3 +454,129 @@ if (req.url === '/') {
 } else {
   // 404
 }
+
+// remember semantic versioning (semver) is
+// major-version.minor-version.patch-version
+
+// require is npm's node_modules directory aware
+// so you can do:
+var moment = require('moment');
+
+// nodemon
+nodemon app.js
+// this watches files in your app and restarts if there's any changes
+
+// express:
+npm install express --save
+
+var express = require('express');
+var app = express();
+
+app.listen(3000);
+
+// environment variables:
+var port = process.env.PORT || 3000;
+
+// express routing
+app.get('/', function(req, res) { // can also do app.post etc.
+  res.send('<html></html>'); // express can automatically detect Content-Type
+});
+
+app.get('/api', function(req, res) {
+  res.json({ firstname: 'Jane', lastname: 'Doe' });
+});
+
+// express docs are supposed to be great for example showing all the
+// possibilities for pattern matching in routing
+
+app.get('/person/:id', function(req, res) {
+  res.send(req.params.id);
+});
+
+// static files served by express
+// standard to name your folder 'public'
+// for example add public/style.css
+app.use('/assets', express.static(__dirname + '/public'));
+// this is called using 'middleware' when you use .use
+// you can add your own middleware
+app.use('/', function(req, res, next) {
+  console.log('request url: ' + req.url);
+  next(); // run the next middleware (get/post checks)
+});
+// there's a lot of express middleware available via npm (and documented on the
+// express site) e.g. cookie-parser is middleware
+var cookieParser = require('cookie-parser');
+app.use(cookieParser());
+app.get('/', function(req, res) {
+  console.log(req.cookies);
+});
+
+// passport is a popular express middleware for authentication
+
+// jade is a popular template engine\
+npm install jade --save
+// it seems when you npm install a view engine, express somehow auto-detects it?
+app.set('view engine', 'jade'); // jade possibly means file extension?
+// EJS is another (older?) template engine
+npm install ejs --save
+app.set('view engine', 'ejs'); // ejs possibly means file extension?
+// express will look for templates in a directory named 'views'
+// index.ejs:
+// <html>
+//    Person: <%= ID %>
+// </html>
+app.get('/', function(req, res) {
+  res.render('index', { ID: 'yo' }); // render EJS template
+});
+// could do <%= ID.length %> (it's executing code)
+
+// access query string:
+req.query.qstr // qstr is the name of the query param on the request
+
+// express can't parse request bodys by default
+// there's a body-parser middleware
+npm install body-parser --save
+var bodyParser = require('body-parser');
+var urlencodedParser = bodyParser.urlencoded( {extended: false} ); // check docs
+// for what extended means
+// urlencodedParser is a callback? middleware? it will be called before the
+// code in the bottom of the callback function executes i.e. it'll parse the
+// body of request url encoded. It may be that the urlencodedParser middleware
+// calls next();
+app.post('/person', urlencodedParser, function(req, res) {
+  console.log(req.body.firstname); // body added by body-parser middleware
+});
+// json body parsing
+var jsonParser = bodyParser.json();
+app.post('/person', jsonParser, function(req, res) {
+  console.log(req.body.firstname);
+});
+
+// express-generator can generate an app skeleton for you
+npm install express-generator -g
+express my-app
+cd my-app
+npm install
+// this will make an app slightly different which uses express router, splitting
+// each route into a separate module suitable for larger apps
+
+// another pattern for splitting up code is create a controllers directory (or
+// whatever you want to call it). add modules in there and require them and pass
+// them the express app reference so that they can still do
+app.post('/person', jsonParser, function(req, res) // ...
+
+// node and mysql
+npm install mysql --save
+// docs show examples of how to use it, patterns seem normal
+
+// nosql mongodb is quite popular with node community
+// mongolab.com can give you a simple mongodb to play with in the cloud
+// mongoose is a popular mongodb client for node
+npm install mongoose --save
+// mongo stores documents which are very similar to json
+// parsing these documents in JavaScript is quite natural
+// so the way mongo stores objects is very friendly with JavaScript and node
+
+// MEAN is mongodb, express, angularjs, nodejs
+
+// angularjs served from node

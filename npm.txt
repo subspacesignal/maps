@@ -1,0 +1,31 @@
+create new package.json:
+  npm init
+  remember that conceivably the name of the app you choose would show up
+  in the npm registry if you published it, so it can matter)
+
+remember that you can easily hook scripts via the package.json scripts key
+
+install new package and save it in the package.json:
+npm install moment --save
+"^2.10.6" means update to any 2.x.y release but don't go to 3.x.y
+"~2.10.6" means update to any 2.10.x release (only give me patches/bug-fixes)
+
+Install all package.json dependencies even if node_modules is destroyed:
+npm install
+
+save as dev dependency (needed for development but not production app):
+npm install jasmine-node --save-dev
+
+global install:
+npm install -g nodemon
+global installs go to /usr/local/lib on Mac
+
+sometimes you'll have multiple copies of the same dependency in node_modules
+because each dependency pulls down it's own dependencies into its own module
+directory
+
+update to latest:
+npm update
+
+install a specific version:
+npm install angular@1.4.7

@@ -1,0 +1,17 @@
+<!-- Quick post request to a server -->
+<html>
+<head>
+<script src="link to latest jquery"></script>
+</head>
+<body>
+  <script>
+    $.ajax({
+      type: "POST",
+      url: "/person",
+      data: JSON.stringify( { firstname: 'Jane' } ),
+      dataType: 'json',
+      contentType: 'application/json'
+    });
+  </script>
+</body>
+</html>

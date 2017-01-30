@@ -294,3 +294,10 @@ var view = new Int32Array(buffer); // int 32 so 32 bits per number
 view[0] = 5;
 view[1] = 15;
 console.log(view);
+
+// remember that browsers provide functionality which doesn't exist natively in
+// JavaScript e.g. the DOM
+// remember the DOM is likely implemented in C/C++, JavaScript is just given
+// access
+// when the browser loads a HTML document it just reads it once and it's kinda
+// throwaway from there, the browser has a DOM tree in memory
