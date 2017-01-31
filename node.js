@@ -570,7 +570,8 @@ npm install mysql --save
 // docs show examples of how to use it, patterns seem normal
 
 // nosql mongodb is quite popular with node community
-// mongolab.com can give you a simple mongodb to play with in the cloud
+// mongolab.com (now called mlab.com) can give you a simple mongodb to play with
+// in the cloud
 // mongoose is a popular mongodb client for node
 npm install mongoose --save
 // mongo stores documents which are very similar to json
@@ -580,3 +581,7 @@ npm install mongoose --save
 // MEAN is mongodb, express, angularjs, nodejs
 
 // angularjs served from node
+// serve an index.html from node which in the head <script> imports angular and
+// in the body/other do <script src="/assets/js/app.js"></script> this is when
+// in node/express you've mapped your /assets route to a public folder of static
+// files containing the index.html and angular javascript
