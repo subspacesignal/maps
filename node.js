@@ -585,3 +585,6 @@ npm install mongoose --save
 // in the body/other do <script src="/assets/js/app.js"></script> this is when
 // in node/express you've mapped your /assets route to a public folder of static
 // files containing the index.html and angular javascript
+
+// programatically shut down a node app with error return code:
+process.exit(1);
