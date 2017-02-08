@@ -1,0 +1,153 @@
+You can do inline style on any HTML element:
+<body style="background-color: red;"></body>
+<span style="background-color: red;"></span>
+
+There are 'web-safe colors' e.g. #3366ff which is a predefined palette of colors
+
+Control text alignment:
+<p style="text-align: center; background-color: #3366ff">blah</p>
+
+class selectors/class rules:
+always start with "." (can't use spaces or special chars):
+class names are case sensitive
+.Bold { font-weight: bold; font-style: italic;  }
+Don't use the "." in markup:
+<p>blah <span class="Bold">blah</span> blah</p>
+
+applying multiple class rules to an element
+.Bold { font-weight: bold; font-style: italic;  }
+.Emphasis { background-color: yellow; font-style: italic }
+<p>blah <span class="Bold Emphasis">blah</span> blah</p>
+(elements marked with multiple classes combine, this is the cascading in CSS)
+(order of classes matters because they override)
+
+html selectors:
+select html element types:
+body { font-family: Verdana; font-size: 10pt; }
+
+make right edge of text line up more evenly:
+p { text-align: justify }
+
+reason for wanting to combine both html selectors and class selectors:
+li { font-family: Verdana; }
+.first { font-size: 10pt; }
+
+<ul>
+<li class="first">blah</li>
+<li>blah</li>
+<li>blah</li>
+</ul>
+
+id selectors
+(kinda the opposite of class rules, can only be used on one element once)
+typically used in "page layouts"?
+always prefixed with #
+#attractions { font-size: 18pt; font-family: Georgia; text-indent: 15px }
+
+<ul id="attractions">
+<li class="first">blah</li>
+<li>blah</li>
+<li>blah</li>
+</ul>
+
+group selectors:
+if you had:
+h1 { font-size: 15pt; }
+h2 { font-size: 13pt; }
+you can:
+h1, h2 { color: #ff9966; }
+
+can do group class selectors:
+.Bold, .Emphasis
+
+or combine html and class group selectors:
+.Bold, .Emphasis, h1, h2 {  }
+li.first {  }
+
+pseudo elements:
+every first line of every paragraph:
+p:first-line {  }
+(not all css properties will work with pseudo selectors and browser behaviors
+can be different)
+
+p:first-letter {  }
+
+psuedo classes:
+mainly for controlling hyperlinks
+hyperlinks have default formatting:
+<a href="#">blah</a>
+(order matters)
+(the link)
+a:link {  }
+(after clicked)
+a:visited {  }
+(when hovered over)
+a:hover {  }
+(when you mouse button is down on a link)
+a:active {  }
+
+box model:
+every element is considered a rect with content
+padding is the spacing inside the box
+border is the outline of the box
+margin is the space outside of the box
+boxes can contain boxes i.e. a ul is a box containing li boxes
+
+there are block-level containers (or block containers) and inline containers
+aka block elements and inline elements
+block level elements/containers have a rect + take up their own separate "line"
+  p div ul are all block
+inline elements exist inside block elements i.e. span and a href
+
+you can think of divs as dedicated block level rects for separation
+in CSS you can see the div to help:
+.showDivClass { background: #ff1122; }
+<div class="showDivClass">
+<ul>
+<li>blah</blah>
+</ul>
+</div>
+
+padding:
+padding-top: 20px;
+etc. or:
+padding: 20px 30px 10px 10px;
+or set top right bottom and left to 20px:
+padding: 20px;
+I think the order is padding: top right bottom left;
+
+border:
+border-top-color: black;
+border-top-style: dotted;
+(thickness) border-top-width: 5px;
+alternative:
+border-top: black solid 3px;
+all of them:
+border: black solid 3px;
+
+margin:
+space outside the box
+margin-top: 10px;
+if you do:
+margin: 100px 250px;
+sets top and bottom to 100px and left and right to 250px
+(works for border and padding too)
+
+width and height:
+width: 300px;
+will limit the width of your div (or whatever) to max 300px
+however!! the actual width in pixels on screen will be width + padding + border!
+(and padding and border are on both sides of the rect)
+
+increasing border size increases in the inward direction on the box?
+(i.e. the margin is not interfered with)
+
+floating:
+related to rect objects
+can use it to wrap one object around another
+e.g. a div of text which flows around a div containing a list:
+(on the div containing a list)
+float: left;
+this seems to say - relinquish control of my 'line' on screen and allow whatever
+is next on this page to take up my space but allow me to float left on the line
+too and make the thing after it flow all around it
