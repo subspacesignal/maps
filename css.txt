@@ -151,3 +151,4 @@ float: left;
 this seems to say - relinquish control of my 'line' on screen and allow whatever
 is next on this page to take up my space but allow me to float left on the line
 too and make the thing after it flow all around it
+float only seems to do left or right ?
