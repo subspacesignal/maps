@@ -301,3 +301,156 @@ console.log(view);
 // access
 // when the browser loads a HTML document it just reads it once and it's kinda
 // throwaway from there, the browser has a DOM tree in memory
+
+// Array.prototype.filter():
+// Filters the entire array based on a criteria and returns an array of only
+// the items which matched the criteria
+const inventors = [
+  { first: 'Albert', last: 'Einstein', year: 1879, passed: 1955 },
+  { first: 'Isaac', last: 'Newton', year: 1643, passed: 1727 },
+  { first: 'Galileo', last: 'Galilei', year: 1643, passed: 1727 }
+];
+
+// tip:
+// you can do:
+console.table(inventors);
+// and chrome will show the array as a table instead of [Object, Object]
+
+// inventors born in the 1500's
+// verbose form:
+const fifteen = inventors.filter(function(inventor) {
+  if (inventor.year >= 1500 && inventor.year < 1600) {
+    return true;
+  } else {
+    return false;
+  }
+});
+// doesn't need the else
+const fifteen = inventors.filter(function(inventor) {
+  if (inventor.year >= 1500 && inventor.year < 1600) {
+    return true;
+  }
+});
+// can you arrow function
+const fifteen = inventors.filter(inventor => {
+  if (inventor.year >= 1500 && inventor.year < 1600) {
+    return true;
+  }
+});
+// inline
+const fifteen = inventors.filter(inventor => {
+  return inventor.year >= 1500 && inventor.year < 1600;
+});
+// more
+const fifteen = inventors.filter(inventor => (inventor.year >= 1500 &&
+  inventor.year < 1600));
+// more
+const fifteen = inventors.filter(inventor => inventor.year >= 1500 &&
+  inventor.year < 1600);
+
+// Array.prototype.map()
+// Takes an array, does something to each item in the array and returns an array
+// of the exact same length, it's like a tranformation pipe
+const fullNames = inventors.map(inventors => inventor.firstname
+  + ' ' + inventor.lastname);
+//(could have used a template string)
+
+// Array.prototype.sort()
+// you get two items at a time and you're asked to sort just those 2 items by
+// returning 1 and -1
+const ordered = inventors.sort(function(firstPerson, secondPerson) {
+  if (firstPerson.year > secondPerson.year) {
+    return 1;
+  } else {
+    return -1;
+  }
+});
+// shorter:
+const ordered = inventors.sort((a, b) => a.year > b.year ? 1 : -1);
+
+// Array.prototype.reduce()
+// If you have logic like:
+var totalYears = 0;
+for (var i = 0; i < inventors.length; i++) {
+  totalYears += (inventors[i].passed - inventors[i].year);
+}
+console.log(totalYears);
+// you can use reduce instead
+// it kinda collects a running total as it iterates through a year
+const totalYears = inventors.reduce((total, inventor) => {
+  return total + (inventors.passed - inventor.year;
+}, 0);
+// the 0 at the end is because on the first iteration there won't be a total
+// yet and when it's passed to use it will be equal to undefined, so we're
+// telling it to use 0 as an initial value.
+
+// sort inventors by years lived:
+const oldest = inventors.sort(function(a, b) {
+  const lastGuy = a.passed - a.year;
+  const nextGuy = b.passed - b.year;
+  // could have used ternary operator ? :
+  if (lastGuy > nextGuy) {
+    return -1;
+  } else {
+    return 1;
+  }
+});
+
+// create a list of boulevards in paris that contain 'de' anywhere in the name
+// you can use document.querySelector but you can also call querySelector on
+// DOM elements:
+// query selector returns a NodeList, not an Array
+// could do:
+const links = document.querySelector('.mw-category a');
+// but also could do:
+const categories = document.querySelector('.mw-category');
+const links = categories.querySelectorAll('a');
+// querySelectorAll gets all matches, not just the first?
+const de = links.map(link => link.textContent); // NodeList won't have .map
+// could do:
+const de = Array.from(links.map(link => link.textContent));
+// could also have used ES6 spread instead:
+// a spread will take every item out of an iterable and put it into an array
+// containing all iterable items
+const links = [...categories.querySelectorAll('a')];
+// filter:
+const de = links
+            .map(link => link.textContent)
+            .filter(streetName => streetName.includes('de'));
+
+// Sort the people alphabetically by last name:
+const people = ['Beck, Glenn', 'Becker, Carl', 'Beckett, Samuel'];
+const alpha = people.sort(function(lastOne, nextOne)) {
+  // 'destructure'
+  // gives you proper variable names instead of parts[0] and parts[1]
+  const [aLast, aFirst] = lastOne.split(', ');
+  console.log(aLast, aFirst);
+  const [bLast, bFirst] = nextOne.split(', ');
+  return aLast > bLast ? 1 : -1;
+  // note that destructuring didn't modify the original array in any way, sort
+  // still returns the exact same array, just in a different order
+}
+
+// sum up the instances of each of these
+const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car'];
+// use reduce
+const transportation = data.reduce(function(obj, item) {
+
+}, {
+  car: 0,
+  walk: 0,
+  truck: 0
+  // isn't really practical because you don't know every possible value ahead of
+  // time so instead:
+});
+
+const transportation = data.reduce(function(obj, item) {
+  // obj is our empty object below, can treat it like an array, one entry for
+  // each type
+  // if it doesn't already exist (first iteration for this type):
+  if (!obj[item]) {
+    obj[item] = 0;
+  }
+  obj[item]++; // increment number of types this particular type was seen
+  return obj; // return the object which contains all counts of all types
+}, {); // empty object here and handle it ourselves above
