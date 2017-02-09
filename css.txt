@@ -152,3 +152,60 @@ this seems to say - relinquish control of my 'line' on screen and allow whatever
 is next on this page to take up my space but allow me to float left on the line
 too and make the thing after it flow all around it
 float only seems to do left or right ?
+
+How to make a sidebar (paragraph of text off to the side)
+<div id="sidebar">
+<h1>heading</h1>
+<p>
+my text content
+</p>
+</div>
+
+// this will still take up an entire line of its own, defeating the purpose
+#sidebar { width: 250px; padding: 10px; border: 2px solid #3300ff; }
+// more:
+#sidebar { width: 250px; padding: 10px; border: 2px solid #3300ff;
+  background: #3366ff; float: right; }
+// other content would run up right against the div though so add margin:
+#sidebar { width: 250px; padding: 10px; border: 2px solid #3300ff;
+  background: #3366ff; float: right; margin-left: 20px; margin-right: 40px; }
+
+// if you want to control the formatting of your sidebar
+// could use a lot of class rules and apply them directly on elements
+// CSS descendent selectors
+// can let you target specific elements with criteria e.g. apply only to h1's
+// which are inside a <p>
+#sidebar h1 {  }
+#sidebar p {  }
+
+// margin properties can take negative values to suck up space?
+
+// you can group descendent selectors:
+#sidebar h1, #sidebar p {  }
+
+// use a background image
+background-image: url(cartoon1.jpg);
+// (tiled by default)
+// control it:
+background-repeat: repeat-x; // only repeat horizontally
+background-repeat: no-repeat;
+(by default it scrolls with the page)
+// make it fixed position:
+background-attachment: fixed;
+// control position:
+background-position: 100px 100px; // x and y coordinates
+// (shorter alternative):
+background: #ffffcc url(cartoon.jpg) no-repeat fixed 100px 100px;
+
+// make a warning message:
+.alert {
+  background: #ffff6f url(exclamation.png) center no-repeat;
+  background-position: 15px 50%; // middle of vertical screen
+  text-align: left;
+  border-top: 2px solid #ffd324;
+  border-bottom: 2px solid #ffd324;
+  padding: 25px 50px;
+  margin-left: 100px;
+  margin-right: 100px;
+  text-indent: 0; // not needed unless already being overridden in a parent?
+}
