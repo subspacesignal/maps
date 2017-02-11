@@ -209,3 +209,288 @@ background: #ffffcc url(cartoon.jpg) no-repeat fixed 100px 100px;
   margin-right: 100px;
   text-indent: 0; // not needed unless already being overridden in a parent?
 }
+
+you can make a table caption element show up on the bottom of a table instead
+of the default which is the top of the table:
+<table>
+  <caption>blah</caption>
+</table>
+
+caption { caption-side: bottom; }
+
+CSS positioning:
+let's you control positioning of an element either in relation to another
+element or in relation to the page itself (block level elements)
+Possible values are: static, relative, absolute, fixed
+
+this would show 4 coloured boxes, each on it's own line, one after another:
+<div style="background: yellow; width: 200px; height: 200px"></div>
+<div style="background: blue; width: 200px; height: 200px"></div>
+<div style="background: red; width: 200px; height: 200px"></div>
+<div style="background: green; width: 200px; height: 200px"></div>
+
+"page flow" is the order in which content is shown in the browser
+almost kinda like the flow of water into the page and often you want to
+interrupt it in various ways
+
+static positioning:
+this is the default so nothing would change by setting static
+mostly used just to override when it was changed elsewhere
+<div style="background: yellow; width: 200px; height: 200px; position: static;
+top: 50px; left: 50px"></div>
+(top and left are ignored because static is set)
+
+absolute positioning:
+take an element out of the normal page flow
+<div style="background: blue; width: 200px; height: 200px; position: absolute;
+top: 20px; left: 20px;"></div>
+If this div has no explicit parent (i.e. it's not inside another div, it's just
+inside the html body) this will rip it out of the normal page flow and make it
+an exception, so it'll be positioned in the top left of the page 20 pixels in
+and 20 pixels down and ON TOP OF (content doesn't flow around it) the normal
+page content which continues to flow as usual but without the blue box back on
+its line where it had been previously.
+if you used right: 20px; it would appear left of the right side of the page by
+20 px.
+Will bottom 20px show it 20 px from bottom of the amount of page currently
+on-screen or 20px above the actual end of the page contents? (potentially
+off-screen)??? (i would guess at the actual end of the page content because
+its positioned relative to the body element)
+
+setting position on nested objects:
+
+you might expect that in the example below, you'd see a red box with a blue box
+inside of it but offset by 20 pixels from the top and left of the red box,
+instead you would only see the blue box in the top left of the page positioned
+20 pixels from the left and top, and the red box in it's normal location as part
+of the normal page content.
+this is because:
+any position information on a nested element is not applied based on the
+position of its parent unless the parent element has position information itself
+so without position information found in its parent, it was checked higher and
+went relative to the page itself (or html body tag)
+
+<div style="background: red; width: 200px; height: 200px;">
+  <div style="background: blue; width: 200px; height: 200px; position: absolute;
+    top: 20px; left: 20px;">
+      <p>blah blah blah</p>
+  </div>
+</div>
+
+so changing it to:
+<div style="background: red; width: 200px; height: 200px; position: absolute;
+  top: 200px">
+  <div style="background: blue; width: 200px; height: 200px; position: absolute;
+    top: 20px; left: 20px;">
+      <p>blah blah blah</p>
+  </div>
+</div>
+will show the red box positioned relative to the page, and the blue box
+positioned relative to the red box, both of them on top of the rest of the page
+content, outside the normal flow of the page
+note that the blue box will spill out of the rect defined by the red box i.e.
+it doesn't make the browser provide a scroll bar or something inside of the red
+box
+
+relative positioning:
+similar to absolute positioning except it doesn't pull the element out of the
+natural page flow
+so in the example of 4 coloured boxes each on its own 'line' in the page,
+absolute positioning of top 10px and left 10px on the red box will show the red
+10px in and 10px down from its natural previous position in the page flow, it
+will still be on top of the next box's 'line' if you position it down there
+
+in relative positioning, a div nested inside another div won't ignore its
+parent's position even if that parent element has no position information, this
+is because it is the natural flow of the page for the div to be positioned
+somewhere inside the parent div so its coordinates are relative to the position
+that it would naturally be anyway
+
+fixed positioning:
+is positioning elements relative to the browser window/screen/viewport itself,
+not the page
+for position:fixed to do anything, you must set at least one of top left bottom
+or right
+when you scroll the page it will remain fixed in position while the page content
+flows behind it
+fixed positioning does also pull it out of the normal page flow putting it on
+top of any normal page content behind it
+
+stacking/z-index property:
+z-index: 2;
+a higher z index means it is shown higher in the stacking order than lower
+values
+z-index: 5; would show up on top of z-index: 2;
+
+overflow:
+used when content is too large and spills over on top of something else
+for exactly, more text than can fit in a 200px by 200px div. by default this
+will spill out below the div on top of whatever is next on the page. 4 possible
+values:
+
+the default:
+overflow: visible;
+
+crop/clip the content inside the div:
+overflow: hidden;
+
+get a scroll box:
+overflow: scroll;
+(has a ugliness in that even if you only need a vertical scroll box it'll also
+give you an inactive horizontal scroll bar)
+
+get scroll bars but only if they're actually needed:
+overflow: auto;
+
+floating/floats:
+e.g. float: left;
+pulls element out of normal flow of page and other things wrap around it
+old school page layouts would use divs, all with absolute positioning with
+worked out coordinates to control the exact layout of the page, this didn't last
+and instead floating/floats became popular
+for divs you have to set a width value for float to work?
+  don't need a width if you're floating an image?
+
+applying float to multiple objects:
+all of these will appear one after another, each on their own 'line'
+<div style="background: red; width: 200px; height: 200px;"></div>
+<div style="background: green; width: 200px; height: 200px;"></div>
+<div style="background: blue; width: 200px; height: 200px;"></div>
+add float:left to all:
+<div style="background: red; width: 200px; height: 200px; float: left;"></div>
+<div style="background: green; width: 200px; height: 200px; float: left;"></div>
+<div style="background: blue; width: 200px; height: 200px; float: left;"></div>
+now they will all appear one after another on the same line, any content after
+them in the page will be displayed to their right wrapping around them if there
+is any space for it
+the first div will float left causes next div to wrap up beside it and so on..
+if you set them all float:right instead you'd get a mirror result
+if there wasn't enough space horizontally to fit them all...
+<div style="background: red; width: 200px; height: 200px;"></div>
+<div style="background: green; width: 200px; height: 200px;"></div>
+<div style="background: blue; width: 800px; height: 200px;"></div>
+will cause anything which doesn't fit to go onto the next 'line' but still
+floating in to the left as much as possible
+
+related to float: clear:
+kind of like a forced line-break
+forces a floating element down to the next available space
+<div style="background: red; width: 200px; height: 200px; float: left;"></div>
+<div style="background: green; width: 800px; height: 200px; float: left;
+  clear: left"></div>
+<div style="background: blue; width: 200px; height: 200px; float: left;"></div>
+clear: left; move any float objects to its left?
+clear: right; move any float objects to its right?
+clear: both; do both of the above
+
+float and clear could be useful for an image gallery type thing
+
+clear: both; could be useful for a footer div to make sure it doesn't wrap up
+onto the same 'line' as the (probably) floated left main content and menu divs
+etc. which come before it
+
+putting space between floating objects:
+use margin to push them away from each other
+
+default width of divs is 100% so will adapt with browser window
+
+fixed-width layout stays the same regardless of browser window size
+
+creating fixed-width layout, wrap all divs in one div, set its width:
+width: 960px;
+margin: 0px auto;
+auto figure out space for left and right will center it regardless of window
+size
+
+lists:
+
+ul { list-style-type: circle; }
+ul { list-style-type: square; }
+ul { list-style-type: decimal; } // force it to a ordered list
+ul { list-style-type: upper-alpha; } // A B C D
+
+ul { list-style-image: url(bullet1.png); }
+
+ul { list-style-position: outside; } // default
+// may look the same as outside but if the list item is longer than the page
+// width it will indent the text at the same indentation as the bullets which
+// isn't how it would be when using outside.
+ul { list-style-position: inside; }
+
+making a horizontal navbar:
+li { display: inline; list-style-type: none; margin-right: -4px;
+  padding: 0px 10px; border-right: 1px solid #666; }
+may need clear: both; to ensure no content gets wrapped up onto the navbar's
+'line'
+
+li:hover { background: #fff; color: #000; }
+
+change cursor (for when you hover mouse over text-based navbar):
+cursor: pointer;
+
+fonts/typography/font fallback list:
+font-family: "Times New Roman", Georgia, serif;
+(if your font name has spaces, you need " ")
+sizes:
+4 units of measurement:
+points, pixels, percentage, ems
+points and pixels are fixed sizes
+12 points is 12 points everywhere (comes from the font world?)
+12 pixels is 12 pixels everywhere
+designers often use pixels for font because everything else like images are all
+in pixels too?
+browser defaults are 12pt fonts which is 16 pixels high
+100% is 100% of 12pts so it's the same as 12pt, 200% would be 24pt (32 pixels)
+1em is 12pt/16 pixels/100%
+you can do 1.2em (120%)
+but em/percentage scale based on fixed size defined in body tag
+e.g. if you do:
+body { font-size: 13pt; }
+then 1em and 100% will be 13pt
+
+increase spacing between characters:
+letter-spacing: 10px;
+
+word spacing:
+word-spacing: 10px;
+
+vertical space:
+line-height: 30px;
+
+change capitalised text to use capital style letters for the small text in
+words too:
+font-variant: small-caps;
+
+import another css file:
+@import url(layout.css);
+
+transparency:
+color: rbga(167, 177, 90, 0.5);
+IE doesn't support transparency, can list two colours:
+color: rbga(167, 177, 90, 0.5); color: rgb(167, 177, 90);
+
+text shadow:
+(can use negative x y cooardinates)
+text-shadow: 2px 2px #000;
+
+blurred text shadow:
+text-shadow: 2px 2px 5x #000;
+
+box shadows:
+box-shadow: 3px 3px 5px #000;
+alternatives for browsers which don't support the official css spec but have
+their own extensions:
+-webkit-box-shadow: 3px 3px 5px #000;
+-moz-box-shadow: 3px 3px 5px #000;
+
+opacity on objects:
+<div style="opacity: 0.5; background-color: red; width: 300px; height 100px">
+</div>
+
+rounded corners:
+border-radius: 10px;
+clockwise, different radius per corner
+border-radius: 10px 10px 10px 10px;
+
+-moz-border-radius: 10px;
+-webkit-border-radius: 10px;
