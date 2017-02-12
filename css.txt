@@ -494,3 +494,6 @@ border-radius: 10px 10px 10px 10px;
 
 -moz-border-radius: 10px;
 -webkit-border-radius: 10px;
+
+Set height to 100% of vertical height:
+height: 100vh;

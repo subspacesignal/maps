@@ -10,3 +10,367 @@ in <table> elements:
   <th> "table header"
 
 there are more list types in html than just ul and ol
+
+In HTML5:
+No DTD needed:
+<!DOCTYPE html>
+Simple, case-insensitive way to specify character encoding:
+<meta charset="UTF-8">
+No need for type when importing .js, instead of:
+<script type="text/javascript" src="scriptfile.js"></script>
+You can just do:
+<script src="scriptfile.js"></script>
+For link tags you also don't need the type, instead of:
+<link rel="stylesheet" type="text/css" href="stylefile.css">
+You can just do:
+<link rel="stylesheet" href="stylefile.css">
+
+tags are case insensitive but lowercase is convention:
+<p> or <P> works
+attributes are the same
+
+br, hr, link, meta are all 'void tags' i.e. tags which aren't allowed have
+content between the tags
+
+new tags:
+
+section: a generic document section, can be used in conjunction with h1-h6 to
+         define document structure.
+
+article: an independent piece of content of a document, such as a blog entry or
+         new article.
+
+aside: a piece of content which is only slightly related to the rest of the page
+
+header: the head of a section
+
+footer: the footer of a section, could contain information about author,
+        copyright etc.
+
+nav: represents a section of the document intended for navigation
+
+dialog: used to markup conversation content
+
+figure: used to associate a caption together with some embedded content like a
+        photo or video.
+
+custom data attributes all being with "data-"
+
+There are lots of events which can trigger .js code, a few examples are:
+offline: when document has gone offline
+onbeforeonload: before the document loads
+onblur: when the window loses focus
+onclick: mouse click
+oncontextmenu
+ondblclick
+ondrag
+
+Web Forms:
+In HTML4:
+Forms use <input> tags
+Input elements use a type attribute to specify data type, there are the
+following types:
+text: free-form text field (usually free from line breaks)
+password: same as text but with ******
+checkbox: set of zero or more values from a predefined list, can check as many
+          as you wish
+radio: an enumerated value from a predefined list, can only pick one at a time
+submit: free form button which initiates form submission
+file: artibrary file with a MIME type and optionally a file name
+image: unclear what this does? something like a coordinate into an image which
+       initiates form submission
+hidden: an arbitrary string not shown on the page
+select: similar to radio but in a drop down menu?
+textarea: free form text field usually with no restrictions on line breaks
+button: a free form button which can trigger any event related to a button
+Example:
+<form action="http://example.com/cgiscript.pl" method="post">
+   <p>
+      <label for="firstname">first name: </label>
+      <input type="text" id="firstname"><br />
+
+      <label for="lastname">last name: </label>
+      <input type="text" id="lastname"><br />
+
+      <label for="email">email: </label>
+      <input type="text" id="email"><br>
+
+      <input type="radio" name="sex" value="male"> Male<br>
+      <input type="radio" name="sex" value="female"> Female<br>
+      <input type="submit" value="send"> <input type="reset">
+   </p>
+</form>
+
+Web Forms 2.0 / <input> element in HTML5
+datetime: date time in UTC timezone
+datetime-local: a date time with no timezone information
+date: year month day
+month: a year and a month
+week: a year and a week
+time: hour minute seconds fractional seconds
+number: only numerical values, step attribute defines precision, default step
+        is 1.
+range: for inputs which should be a value from a range of numbers
+email: only emails allowed
+url: only urls allowed
+
+<output> element can be used to be a part of a form where output is sent by .js
+         as a result of (for example) clicking an <input> button in the same
+         form
+
+placeholder attribute works on <input> and <textarea> elements:
+  <input type="text" name="search" placeholder="search the web"/>
+cannot contain carriage returns or line-feeds.
+
+autofocus:
+on page load automatically focus on a particular form field:
+<!DOCTYPE HTML>
+<html>
+   <body>
+      <form action="/cgi-bin/html5.cgi" method="get">
+         Enter email : <input type="text" name="newinput" autofocus/>
+         <p>Try to submit using Submit button</p>
+         <input type="submit" value="submit" />
+      </form>
+   </body>
+</html>
+
+required atrribute:
+client side form validation without needing .js:
+<!DOCTYPE HTML>
+<html>
+   <body>
+      <form action="/cgi-bin/html5.cgi" method="get">
+         Enter email : <input type="text" name="newinput" required/>
+         <p>Try to submit using Submit button</p>
+         <input type="submit" value="submit" />
+      </form>
+   </body>
+</html>
+
+SVG:
+is built into browsers:
+<svg id="svgelem" height="200" xmlns="http://www.w3.org/2000/svg">
+   <circle id="redcircle" cx="50" cy="50" r="50" fill="red" />
+</svg>
+
+MathML is built in:
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+   <mrow>
+      <msup><mi>a</mi><mn>2</mn></msup>
+      <mo>+</mo>
+      <msup><mi>b</mi><mn>2</mn></msup>
+      <mo>=</mo>
+      <msup><mi>c</mi><mn>2</mn></msup>
+   </mrow>
+</math>
+
+Sessions/Cookies/Web Storage:
+Pre-HTML5 there were HTTP session cookies
+  used for storing structured data on the client side
+  have drawbacks:
+    cookies included on every request when often not needed
+    when on HTTP then cookie is sent unencrypted (from a TLS/SSL perspective)
+    on every request (a reason for encrypting the cookie contents itself)
+    cookie sizes are effectively limited to around 4kb of data
+HTML5 introduced 'session storage' and 'local storage'
+
+Session storage:
+intended for situations where a user is carrying out a single transaction but
+could be carrying out multiple transactions simultaneously in different windows
+For example: with normal cookies, if you were booking tickets from the same
+             website in two different windows simultaneously, the site may get
+             confused because the same cookie state is used in two places
+             potentially with both windows overwriting each other's state.
+             Session storage would allow for different pieces of state per
+             window and then all session state would be deleted one all windows
+             are closed.
+Session storage can be accessed in the JavaScript console:
+sessionStorage
+
+Local storage:
+Used to store user data which can span multiple windows but which lasts beyond
+the current session, even when all windows have been closed. Example use-cases
+include storing megabytes of information such as partially edited documents, a
+user's mailbox etc. for performance reasons.
+Can be accessed in the JavaScript console:
+localStorage
+You can do:
+localStorage.remove('key');
+or:
+localStorage.clear(); // clear everything (for this domain presumeably)
+
+Web SQL:
+considered deprecated, see indexeddb below
+There is a browser SQL database
+Core methods: openDatabase, transaction, executeSql
+var db = openDatabase('mydb', '1.0', 'Test DB', 2 * 1024 * 1024);
+
+Server Sent Events (SSE) / <eventsource> element
+  The <eventsource> element opens a persistent connection to a server so that a
+  server could send data to a client only when there is some and avoid polling
+  <div id="sse">
+    <eventsource src="/cgi-bin/ticker.cgi" />
+  </div>
+
+IndexedDB:
+local browser database suggested to replace web sql
+stores key value pairs
+non-relational unlike web sql
+mostly aysnchronous api
+not a structured query language
+can access any data from the same domain
+
+Web Sockets:
+bidirectional communication technology
+operates on a single socket
+exposed via .js interface
+once a websocket is open:
+  call .send() method to send data to the server
+  listen to onmessage event handler to receive data from server
+  call .close() to terminate any existing connection
+Create a websocket object:
+var Socket = new WebSocket(url, [protocal] ); // protocol is optional
+Socket.readyState
+  readonly
+  possible values: 0 - not yet established, 1 - established and communication
+                   is possible, 2 - going through closing handshake, 3 - closed
+                   or could not be opened.
+Socket.bufferedAmount
+  readonly
+  the number of bytes of UTF-8 text which have been queued using .send()
+
+WebSocket events:
+  open (event handler: Socket.onopen) - connection established
+  message (event handler: Socket.onmessage) - client recieves data from server
+  error (event handler: Socket.onerror) - an error in communication occured
+  close (event handler: Socket.onclose) - connection closed
+
+<!DOCTYPE HTML>
+<html>
+   <head>
+      <script type="text/javascript">
+         function WebSocketTest()
+         {
+            if ("WebSocket" in window)
+            {
+               alert("WebSocket is supported by your Browser!");
+               var ws = new WebSocket("ws://localhost:9998/echo");
+               ws.onopen = function()
+               {
+                  ws.send("Message to send");
+                  alert("Message is sent...");
+               };
+               ws.onmessage = function (evt)
+               {
+                  var received_msg = evt.data;
+                  alert("Message is received...");
+               };
+               ws.onclose = function()
+               {
+                  alert("Connection is closed...");
+               };
+            }
+            else
+            {
+               alert("WebSocket NOT supported by your Browser!");
+            }
+         }
+      </script>
+   </head>
+   <body>
+      <div id="sse">
+         <a href="javascript:WebSocketTest()">Run WebSocket</a>
+      </div>
+   </body>
+</html>
+
+Canvas:
+<canvas id="mycanvas" width="100" height="100"></canvas>
+
+Video:
+(broswer will play first source it can support)
+<!DOCTYPE HTML>
+<html>
+   <body>
+      <video  width="300" height="200" controls autoplay>
+         <source src="/html5/foo.ogg" type="video/ogg" />
+         <source src="/html5/foo.mp4" type="video/mp4" />
+         Your browser does not support the video element.
+      </video>
+   </body>
+</html>
+attributes:
+autoplay, autobuffer, controls, height, loop, preload, poster, src, width
+
+Audio:
+<audio src="foo.wav" controls autoplay>
+   Your browser does not support the <audio> element.
+</audio>
+
+There are many media events (some) examples:
+abort, canplay, ended, error, pause, play, progress, seeked, volumechange
+
+Geolocation:
+.js api can get latitude and longtitude
+var geolocation = navigator.geolocation;
+.getCurrentPosition()
+.watchPosition() // get periodic updates on current location
+.clearWatch()
+Position object properties (some examples):
+coords, cooards.latitude, cooards.accuracy, cooards.heading, cooards.speed
+Errors: 0 - UNKKNOWN_ERROR, 1 - PERMISSION_DENIED, 2 - POSITION_UNAVAILABLE,
+        3 - TIMEOUT
+Position options:
+  enableHighAccuracy
+  timeout
+  maximumAge
+
+Microdata:
+  way to provide additional semantics in your page
+  lets you define your own custom elements and embed custom properties in your
+  page
+  is like name value pairs, there are 'items' and 'properties'
+  can later be accessed via .js api?
+
+  <html>
+   <body>
+      <div itemscope>
+         <p>My name is <span itemprop="name">Zara</span>.</p>
+      </div>
+      <div itemscope>
+         <p>My name is <span itemprop="name">Nuha</span>.</p>
+      </div>
+   </body>
+</html>
+
+there is itemscope, itemtype, itemid, itemprop, itemref
+function supports_microdata_api() {
+   return !!document.getItems;
+}
+
+Drag and Drop Events
+This will let you drag actual objects around the screen
+There are multiple events and an Event object which has a readonly attribute
+called dataTransfer
+DataTransfer object holds data about drag and drop operations.
+
+Web Workers
+client-side browser JavaScript is all single threaded
+Web Workers allow you to do work concurrently without blocking the UI
+
+Web Messaging:
+Usually it would be an error if your page tried to send data to an ad iframe in
+the page, Web Messaging can allow you to pass it as a message event
+
+CORS (cross origin resource sharing)
+allows restricted resources from another domain in the page
+Seems to allow you to make requests to other domains as long as the server has
+CORS enabled?
+
+Web RTC:
+browser to browser voice calling/video chat/P2P file sharing
+APIs:
+MediaStream
+RTCPeerConnection
+RTCDataChannel
